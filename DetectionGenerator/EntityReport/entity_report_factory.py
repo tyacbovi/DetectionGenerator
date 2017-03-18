@@ -7,6 +7,7 @@ class EntityReportFactory:
         self.location_generator = _location_generator
 
     def create(self):
+        # type: () -> EntityReport
         location = self.location_generator.generate()
         return EntityReport(self.entity_id_generator.generate(),
                             location.lat,
