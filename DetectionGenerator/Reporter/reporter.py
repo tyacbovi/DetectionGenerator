@@ -2,5 +2,5 @@ class Reporter:
     def __init__(self):
         pass
 
-    def report(self, *args):
+    def report(self, msg):
         pass
