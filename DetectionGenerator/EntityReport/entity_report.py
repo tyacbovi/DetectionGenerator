@@ -1,8 +1,7 @@
-class EntityReport:
-    def __init__(self, _id, _location_lat, _location_long):
-        self.id = _id
-        self.location_lat = _location_lat
-        self.location_long = _location_long
+from collections import namedtuple
+from simplejson import dumps
 
-    def __repr__(self):
-        return "id:" + self.id + " , lat:" + str(self.location_lat) + " , long:" + str(self.location_long)
+
+class EntityReport(namedtuple("EntityReport", ("id", "location_lat", "location_long"))):
+    def to_json(self):
+        return dumps(self, namedtuple_as_object=True)

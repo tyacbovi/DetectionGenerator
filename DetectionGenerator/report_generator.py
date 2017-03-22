@@ -26,4 +26,4 @@ class ReportGenerator:
     def generate(self):
         for i in range(self.number_of_reports):
             entity_report = self.entity_report_factory.create()
-            self.reporter.report(entity_report)
+            self.reporter.report(entity_report.to_json())

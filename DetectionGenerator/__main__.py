@@ -16,7 +16,7 @@ if __name__ == "__main__":
     settings = cli.get_user_settings()
     number_of_updates_per_sec = settings.freq
     broker_list = settings.brokers
-    source_name = settings.sorce_name
+    source_name = settings.source_name
 
     kafka_reporter = KafkaReporter(_kafka_broker_ip=broker_list, _topic=source_name)
 

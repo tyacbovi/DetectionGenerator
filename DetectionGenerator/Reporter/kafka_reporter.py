@@ -23,15 +23,11 @@ class KafkaReporter(Reporter):
             sys.stderr.write('%% Message delivered to %s [%d]\n' % (msg.topic(), msg.partition()))
 
     def report(self, msg):
-        string_msg = str(msg)  # Must step for passing to kafka
-        print string_msg
-
         try:
             # Produce line (without newline)
-            self.producer.produce(self.topic, string_msg, callback=self.delivery_callback)
+            self.producer.produce(self.topic, msg, callback=self.delivery_callback)
 
         except BufferError as e:
             sys.stderr.write('%% Local producer queue is full '
                              '(%d messages awaiting delivery): try again\n' %
                              len(self.producer))
-
