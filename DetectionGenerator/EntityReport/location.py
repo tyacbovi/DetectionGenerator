@@ -1,4 +1,5 @@
 from collections import namedtuple
 
 
-Location = namedtuple("Location", ("lat", "long"))
+class Location (namedtuple("Location", ("lat", "long"))):
+    pass

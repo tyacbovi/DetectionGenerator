@@ -6,5 +6,6 @@ class LocationGenerator:
     def __init__(self):
         pass
 
-    def generate(self):
+    @staticmethod
+    def generate():
         return Location(random(), random())
