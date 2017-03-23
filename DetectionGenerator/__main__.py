@@ -18,7 +18,6 @@ if __name__ == "__main__":
 
     entity_report_factory = EntityReportFactory(DetectionIdGeneratorUUID(), location_generator)
     entity_report_update = EntityReportUpdate(location_generator)
-    entities_manager = EntitiesManager(entity_pool, entity_report_factory, entity_report_update)
 
     cli = DetectionGeneratorCLI()
     settings = cli.get_user_settings()
@@ -27,6 +26,7 @@ if __name__ == "__main__":
     source_name = settings.source_name
 
     kafka_reporter = KafkaReporter(_kafka_broker_ip=broker_list, _topic=source_name)
+    entities_manager = EntitiesManager(entity_pool, entity_report_factory, entity_report_update, source_name)
 
     reporter = ReportGenerator(entities_manager, number_of_updates_per_sec, kafka_reporter)
     while (True):
