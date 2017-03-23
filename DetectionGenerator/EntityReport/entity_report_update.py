@@ -7,4 +7,6 @@ class EntityReportUpdate:
 
     def update(self, entity_report):
         assert isinstance(entity_report, EntityReport)
-        entity_report.location_lat, entity_report.location_long = self.location_generator.generate()
+        new_location = self.location_generator.generate()
+        return EntityReport(entity_report.id, new_location.lat, new_location.long)
+

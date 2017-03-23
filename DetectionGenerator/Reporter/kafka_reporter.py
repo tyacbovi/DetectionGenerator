@@ -27,7 +27,7 @@ class KafkaReporter(Reporter):
             # Produce line (without newline)
             self.producer.produce(self.topic, msg, callback=self.delivery_callback)
 
-        except BufferError as e:
+        except BufferError:
             sys.stderr.write('%% Local producer queue is full '
                              '(%d messages awaiting delivery): try again\n' %
                              len(self.producer))
