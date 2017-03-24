@@ -7,14 +7,11 @@ if __name__ == "__main__":
     from Reporter.kafka_reporter import KafkaReporter
     from report_generator import ReportGenerator
     from detetction_generator_cli import DetectionGeneratorCLI
-    from redis import Redis
-    from EntitiesPool.entities_pool_redis import EntitiesPoolRedis
+    import plyvel
     from entities_manager import EntitiesManager
 
     location_generator = LocationGenerator()
-    redis_connection = Redis()
-    redis_connection.flushall()
-    entity_pool = EntitiesPoolRedis(redis_connection)
+    db_connection = plyvel.DB('/tmp/entities_pool/', create_if_missing=True)
 
     entity_report_factory = EntityReportFactory(DetectionIdGeneratorUUID(), location_generator)
     entity_report_update = EntityReportUpdate(location_generator)
@@ -26,7 +23,7 @@ if __name__ == "__main__":
     source_name = settings.source_name
 
     kafka_reporter = KafkaReporter(_kafka_broker_ip=broker_list, _topic=source_name)
-    entities_manager = EntitiesManager(entity_pool, entity_report_factory, entity_report_update, source_name)
+    entities_manager = EntitiesManager(db_connection, entity_report_factory, entity_report_update, source_name)
 
     reporter = ReportGenerator(entities_manager, number_of_updates_per_sec, kafka_reporter)
     while (True):
