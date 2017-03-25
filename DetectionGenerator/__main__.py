@@ -9,19 +9,33 @@ if __name__ == "__main__":
     from detetction_generator_cli import DetectionGeneratorCLI
     import plyvel
     from entities_manager import EntitiesManager
-
-    location_generator = LocationGenerator()
-    db_connection = plyvel.DB('/tmp/entities_pool/', create_if_missing=True)
-
-    entity_report_factory = EntityReportFactory(DetectionIdGeneratorUUID(), location_generator)
-    entity_report_update = EntityReportUpdate(location_generator)
+    import json
+    from utils.logger_util import log
 
     cli = DetectionGeneratorCLI()
     settings = cli.get_user_settings()
+    print "Generator started with the following settings: " + json.dumps(vars(settings))
+
     number_of_updates_per_sec = settings.freq
     broker_list = settings.brokers
     source_name = settings.source_name
+    debug_level = settings.debug_lvl
+    to_empty_db = settings.to_clear
 
+    db_connection_name = '/tmp/entities_reports/'
+
+    def db_setup():
+        if to_empty_db:
+            plyvel.destroy_db(db_connection_name)
+        return plyvel.DB(db_connection_name, create_if_missing=True)
+
+    db_connection = db_setup()
+
+    location_generator = LocationGenerator()
+    entity_report_factory = EntityReportFactory(DetectionIdGeneratorUUID(), location_generator)
+    entity_report_update = EntityReportUpdate(location_generator)
+
+    log().setLevel(debug_level)
     kafka_reporter = KafkaReporter(_kafka_broker_ip=broker_list, _topic=source_name)
     entities_manager = EntitiesManager(db_connection, entity_report_factory, entity_report_update, source_name)
 

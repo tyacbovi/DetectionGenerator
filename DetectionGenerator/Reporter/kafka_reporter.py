@@ -1,6 +1,6 @@
 from reporter import Reporter
 from confluent_kafka import Producer
-import sys
+from DetectionGenerator.utils.logger_util import log
 
 
 class KafkaReporter(Reporter):
@@ -18,16 +18,15 @@ class KafkaReporter(Reporter):
     @staticmethod
     def delivery_callback(err, msg):
         if err:
-            sys.stderr.write('%% Message failed delivery: %s\n' % err)
+            log().error('%% Message failed delivery: %s\n' % err)
         else:
-            sys.stderr.write('%% Message delivered to %s [%d]\n' % (msg.topic(), msg.partition()))
+            log().debug('%% Message delivered to %s [%d]\n' % (msg.topic(), msg.partition()))
 
     def report(self, msg):
         try:
-            # Produce line (without newline)
             self.producer.produce(self.topic, msg, callback=self.delivery_callback)
 
         except BufferError:
-            sys.stderr.write('%% Local producer queue is full '
-                             '(%d messages awaiting delivery): try again\n' %
-                             len(self.producer))
+            log().error('%% Local producer queue is full '
+                        '(%d messages awaiting delivery): try again\n' %
+                        len(self.producer))
