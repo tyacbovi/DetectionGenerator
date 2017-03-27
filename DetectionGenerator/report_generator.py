@@ -22,7 +22,6 @@ class ReportGenerator:
 
     def generate(self):
         entities_reports = self.entity_manager.generate_updates(self.number_of_reports)
-        print len(entities_reports)
 
         for report in entities_reports:
             log().debug("Reporting update on entity:" + report.id + " with the following " + report.to_json())
