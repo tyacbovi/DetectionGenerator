@@ -39,4 +39,5 @@ RUN curl -Lk -o detection_generator.zip https://github.com/tyacbovi/DetectionGen
     unzip detection_generator.zip
 RUN cd DetectionGenerator-master/DetectionGenerator/
 
+ENV PYTHONPATH "/usr/local/src/DetectionGenerator-master/"
 ENTRYPOINT ["python", "/usr/local/src/DetectionGenerator-master/DetectionGenerator/__main__.py"]
