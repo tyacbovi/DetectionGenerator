@@ -43,6 +43,9 @@ if __name__ == "__main__":
 
     if settings.to_only_create:
         reporter.generate()
+        while True:
+            import time
+            time.sleep(1)
     else:
         while True:
             reporter.generate()

@@ -4,13 +4,14 @@ from DetectionGenerator.utils.logger_util import log
 
 
 class KafkaReporter(Reporter):
-    def __init__(self, _kafka_broker_ip, _topic):
+    def __init__(self, _kafka_broker_ip, _topic, _sync_action = False):
         assert isinstance(_kafka_broker_ip, str)
         self.kafka_broker_ip = _kafka_broker_ip
 
         conf = {'bootstrap.servers': self.kafka_broker_ip}
         self.producer = Producer(conf)
         self.topic = _topic
+        self.sync_action = _sync_action
 
     # Optional per-message delivery callback (triggered by poll() or flush())
     # when a message has been successfully delivered or permanently
@@ -30,3 +31,5 @@ class KafkaReporter(Reporter):
             log().error('%% Local producer queue is full '
                         '(%d messages awaiting delivery): try again\n' %
                         len(self.producer))
+        if self.sync_action:
+            self.producer.flush(timeout=500)
