@@ -36,7 +36,7 @@ if __name__ == "__main__":
     entity_report_update = EntityReportUpdate(location_generator)
 
     log().setLevel(debug_level)
-    kafka_reporter = KafkaReporter(_kafka_broker_ip=broker_list, _topic=source_name + "raw-data")
+    kafka_reporter = KafkaReporter(_kafka_broker_ip=broker_list, _topic=source_name + "-raw-data")
     entities_manager = EntitiesManager(db_connection, entity_report_factory, entity_report_update, source_name)
 
     reporter = ReportGenerator(entities_manager, number_of_updates_per_sec, kafka_reporter)
