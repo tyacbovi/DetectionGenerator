@@ -40,5 +40,9 @@ if __name__ == "__main__":
     entities_manager = EntitiesManager(db_connection, entity_report_factory, entity_report_update, source_name)
 
     reporter = ReportGenerator(entities_manager, number_of_updates_per_sec, kafka_reporter)
-    while (True):
+
+    if settings.to_only_create:
         reporter.generate()
+    else:
+        while True:
+            reporter.generate()

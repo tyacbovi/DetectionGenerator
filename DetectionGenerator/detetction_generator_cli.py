@@ -10,6 +10,7 @@ class DetectionGeneratorCLI:
         self.parser.add_argument("-s", "--source-name", type=str, default="test", dest="source_name")
         self.parser.add_argument("-d", "--debug-lvl", type=str, default="INFO", dest="debug_lvl")
         self.parser.add_argument("-c", "--clear-all", type=bool, default=False, dest="to_clear")
+        self.parser.add_argument("-t", "--only-create", type=bool, default=False, dest="to_only_create")
 
     def get_user_settings(self):
         return self.parser.parse_args()
