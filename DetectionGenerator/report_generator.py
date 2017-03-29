@@ -1,6 +1,7 @@
 from Reporter.reporter import Reporter
 from entities_manager import EntitiesManager
 from utils.logger_util import log
+import time
 
 
 class ReportGenerator:
@@ -11,6 +12,8 @@ class ReportGenerator:
         """
         :type _number_of_reports: int
         :type _reporter: Reporter
+        :type _entity_manager: EntitiesManager
+        :type _report_freq: float
         """
         assert isinstance(_reporter, Reporter)
         assert isinstance(_entity_manager, EntitiesManager)
@@ -19,10 +22,26 @@ class ReportGenerator:
         self.report_freq = _report_freq
         self.reporter = _reporter
         self.entity_manager = _entity_manager
+        self.reports_total = 0
 
     def generate(self):
-        entities_reports = self.entity_manager.generate_updates(self.number_of_reports)
+        freq_count = 0.0
+        last_round_time = time.time()
 
-        for report in entities_reports:
-            log().debug("Reporting update on entity:" + report.id + " with the following " + report.to_json())
-            self.reporter.report(report.to_json())
+        while True:
+            if freq_count >= 1:
+                log().info("Current number of reports:" + str(self.reports_total) +
+                           " in " + str(time.time() - last_round_time) + " sec")
+                self.reports_total = 0
+                freq_count = 0
+                last_round_time = time.time()
+
+            freq_count = freq_count + (1.0 / self.report_freq)
+
+            entities_reports = self.entity_manager.generate_updates(self.number_of_reports)
+            self.reports_total = self.reports_total + len(entities_reports)
+
+            for report in entities_reports:
+                log().debug("Reporting update on entity:" + report.id + " with the following " + report.to_json())
+                self.reporter.report(report.to_json())
+            time.sleep(1.0/self.report_freq)

@@ -15,7 +15,8 @@ if __name__ == "__main__":
     cli = DetectionGeneratorCLI()
     settings = cli.get_user_settings()
 
-    number_of_updates_per_sec = settings.freq
+    entity_reporting_freq = settings.freq
+    number_of_entities = settings.number_of_entities
     broker_list = settings.brokers
     source_name = settings.source_name
     debug_level = settings.debug_lvl
@@ -40,7 +41,8 @@ if __name__ == "__main__":
     kafka_reporter = KafkaReporter(_kafka_broker_ip=broker_list, _topic=source_name + "-raw-data")
     entities_manager = EntitiesManager(db_connection, entity_report_factory, entity_report_update, source_name)
 
-    reporter = ReportGenerator(entities_manager, number_of_updates_per_sec, kafka_reporter)
+    reporter = ReportGenerator(_entity_manager=entities_manager, _report_freq=entity_reporting_freq,
+                               _reporter=kafka_reporter, _number_of_reports=number_of_entities)
 
     if settings.to_only_create:
         reporter.generate()
@@ -48,5 +50,4 @@ if __name__ == "__main__":
             import time
             time.sleep(1)
     else:
-        while True:
-            reporter.generate()
+        reporter.generate()
