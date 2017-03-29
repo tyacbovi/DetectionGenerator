@@ -21,14 +21,15 @@ class EntitiesManager:
         all_entities_report = []
         snapshot = self.db_connection.snapshot()
         num_of_entities = 0
+
         for entity_id, entity in snapshot:
-            ++num_of_entities
+            num_of_entities = num_of_entities + 1
             entity_report = EntityReport(**loads(entity))
             updated_entity_report = self.update_factory.update(entity_report)
             all_entities_report.append(updated_entity_report)
             self.db_connection.put(key=updated_entity_report.id, value=updated_entity_report.to_json())
 
-        if num_of_entities != update_rate:
+        if num_of_entities < update_rate:
             for _ in range(update_rate - num_of_entities):
                 new_entity = self.creation_factory.create(self.source_name)
                 all_entities_report.append(new_entity)
