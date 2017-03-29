@@ -14,13 +14,15 @@ if __name__ == "__main__":
 
     cli = DetectionGeneratorCLI()
     settings = cli.get_user_settings()
-    print "Generator started with the following settings: " + json.dumps(vars(settings))
 
     number_of_updates_per_sec = settings.freq
     broker_list = settings.brokers
     source_name = settings.source_name
     debug_level = settings.debug_lvl
     to_empty_db = settings.to_clear
+
+    log().setLevel(debug_level)
+    log().info("Generator started with the following settings: " + json.dumps(vars(settings)))
 
     db_connection_name = '/tmp/entities_reports/'
 
@@ -35,7 +37,6 @@ if __name__ == "__main__":
     entity_report_factory = EntityReportFactory(DetectionIdGeneratorUUID(), location_generator)
     entity_report_update = EntityReportUpdate(location_generator)
 
-    log().setLevel(debug_level)
     kafka_reporter = KafkaReporter(_kafka_broker_ip=broker_list, _topic=source_name + "-raw-data")
     entities_manager = EntitiesManager(db_connection, entity_report_factory, entity_report_update, source_name)
 
