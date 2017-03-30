@@ -1,0 +1,18 @@
+echo "apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: rand-gen
+  namespace: default
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: rand-gen
+      labels:
+        app: rand-gen
+    spec:
+      containers:
+      - name: rand-gen
+        image: docker.io/tyacbovi/detectiongenerator
+        command: [\"python\"]
+        args: [\"/usr/local/src/DetectionGenerator-master/DetectionGenerator/__main__.py\",\"-b\",\"kafka.kafka:9092\",\"-s\",\"$1\",\"-t\",\"True\"]"

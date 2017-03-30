@@ -15,6 +15,6 @@ spec:
       - name: rand-gen
         image: docker.io/tyacbovi/detectiongenerator
         command: ["python"]
-        args: ["/usr/local/src/DetectionGenerator-master/DetectionGenerator/__main__.py","-b","kafka.kafka:9092","-s","source1-raw","-t","True"]
+        args: ["/usr/local/src/DetectionGenerator-master/DetectionGenerator/__main__.py","-b","kafka.kafka:9092","-s","source1","-t","True"]0
 ~                                                                                                                                                                                                            
 ~                      
