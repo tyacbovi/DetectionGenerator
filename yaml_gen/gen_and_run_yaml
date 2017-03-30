@@ -1,3 +1,4 @@
-temp_file=mktemp
+temp_file=$(mktemp)
+echo "Created kube yaml at "$temp_file
 ./kube_deploy_gen $1 > $temp_file
 kubectl create -f $temp_file 
