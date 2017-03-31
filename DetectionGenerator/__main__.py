@@ -1,4 +1,3 @@
-
 if __name__ == "__main__":
     from EntityReport.entity_report_factory import EntityReportFactory
     from EntityReport.entity_report_update import EntityReportUpdate
@@ -27,10 +26,12 @@ if __name__ == "__main__":
 
     db_connection_name = '/tmp/entities_reports/'
 
+
     def db_setup():
         if to_empty_db:
             plyvel.destroy_db(db_connection_name)
         return plyvel.DB(db_connection_name, create_if_missing=True)
+
 
     db_connection = db_setup()
 
@@ -38,7 +39,8 @@ if __name__ == "__main__":
     entity_report_factory = EntityReportFactory(DetectionIdGeneratorUUID(), location_generator)
     entity_report_update = EntityReportUpdate(location_generator)
 
-    kafka_reporter = KafkaReporter(_kafka_broker_ip=broker_list, _topic=source_name + "-raw-data")
+    kafka_reporter = KafkaReporter(_kafka_broker_ip=broker_list, _topic=source_name + "-raw-data", _sync_action=
+                                    (settings.to_only_create or settings.kafka_sync))
     entities_manager = EntitiesManager(db_connection, entity_report_factory, entity_report_update, source_name)
 
     reporter = ReportGenerator(_entity_manager=entities_manager, _report_freq=entity_reporting_freq,
@@ -48,6 +50,7 @@ if __name__ == "__main__":
         reporter.generate()
         while True:
             import time
+
             time.sleep(1)
     else:
         reporter.generate()

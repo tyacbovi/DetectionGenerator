@@ -14,6 +14,8 @@ class DetectionGeneratorCLI:
         self.parser.add_argument("-c", "--clear-all", type=bool, default=False, dest="to_clear")
         self.parser.add_argument("-t", "--only-create", type=bool, default=False, dest="to_only_create",
                                  help="If on, will only create the entities")
+        self.parser.add_argument("-w", "--wait-for-kafka-sync", type=bool, default=False, dest="kafka_sync",
+                                 help="If on, will write and await to kafka")
 
     def get_user_settings(self):
         return self.parser.parse_args()

@@ -4,7 +4,7 @@ from DetectionGenerator.utils.logger_util import log
 
 
 class KafkaReporter(Reporter):
-    def __init__(self, _kafka_broker_ip, _topic, _sync_action = False):
+    def __init__(self, _kafka_broker_ip, _topic, _sync_action=False):
         assert isinstance(_kafka_broker_ip, str)
         self.kafka_broker_ip = _kafka_broker_ip
 
