@@ -16,23 +16,26 @@ class EntitiesManager:
         self.update_factory = _update_factory
         self.db_connection = _db_connection
         self.source_name = _source_name
+        # Recover from DB
+        self.all_entities_reports = []
+        for entity_id, entity in self.db_connection:
+            self.all_entities_reports.append(EntityReport(**loads(entity_id)))
 
-    def generate_updates(self, update_rate):
-        all_entities_report = []
-        snapshot = self.db_connection.snapshot()
-        num_of_entities = 0
+    def generate_updates(self, number_of_reports):
+        json_reports = []
+        for i, entity in enumerate(self.all_entities_reports):
+            self.all_entities_reports[i] = self.update_factory.update(entity)
+            json_report = self.all_entities_reports[i].to_json()
+            json_reports.append(json_report)
+            self.db_connection.put(key=self.all_entities_reports[i].id, value=json_report)
 
-        for entity_id, entity in snapshot:
-            num_of_entities = num_of_entities + 1
-            entity_report = EntityReport(**loads(entity))
-            updated_entity_report = self.update_factory.update(entity_report)
-            all_entities_report.append(updated_entity_report)
-            self.db_connection.put(key=updated_entity_report.id, value=updated_entity_report.to_json())
-
-        if num_of_entities < update_rate:
-            for _ in range(update_rate - num_of_entities):
+        num_of_entities = len(self.all_entities_reports)
+        if num_of_entities < number_of_reports:
+            for _ in range(number_of_reports - num_of_entities):
                 new_entity = self.creation_factory.create(self.source_name)
-                all_entities_report.append(new_entity)
-                self.db_connection.put(key=new_entity.id, value=new_entity.to_json())
+                self.all_entities_reports.append(new_entity)
+                json_report = new_entity.to_json()
+                json_reports.append(json_report)
+                self.db_connection.put(key=new_entity.id, value=json_report)
 
-        return all_entities_report
+        return json_reports

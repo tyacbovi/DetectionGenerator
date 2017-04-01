@@ -8,12 +8,12 @@ class ReportGenerator:
     def __init__(self, _entity_manager
                      , _number_of_reports
                      , _reporter
-                     , _report_freq=1.0):
+                     , _report_freq=1):
         """
         :type _number_of_reports: int
         :type _reporter: Reporter
         :type _entity_manager: EntitiesManager
-        :type _report_freq: float
+        :type _report_freq: int
         """
         assert isinstance(_reporter, Reporter)
         assert isinstance(_entity_manager, EntitiesManager)
@@ -29,19 +29,22 @@ class ReportGenerator:
         last_round_time = time.time()
 
         while True:
+            start_generation_time = time.time()
+
+            # Monitoring over full seconds reports
             if freq_count >= 1:
                 log().info("Current number of reports:" + str(self.reports_total) +
                            " in " + str(time.time() - last_round_time) + " sec")
                 self.reports_total = 0
                 freq_count = 0
                 last_round_time = time.time()
-
-            freq_count = freq_count + (1.0 / self.report_freq)
+            freq_count = freq_count + (1.0/self.report_freq)
 
             entities_reports = self.entity_manager.generate_updates(self.number_of_reports)
             self.reports_total = self.reports_total + len(entities_reports)
 
             for report in entities_reports:
-                log().debug("Reporting update on entity:" + report.id + " with the following " + report.to_json())
-                self.reporter.report(report.to_json())
-            time.sleep(1.0/self.report_freq)
+                log().debug("Reporting update on entity:" + report)
+                self.reporter.report(report)
+            end_generation_time = time.time()
+            time.sleep((1.0/self.report_freq) - (end_generation_time - start_generation_time))
