@@ -1,7 +1,8 @@
 from __future__ import print_function
 import argparse
-import os
+import subprocess
 import json
+import os
 
 
 class JSONGeneratorCLI:
@@ -73,6 +74,11 @@ if __name__ == "__main__":
         if user_settings.kube_settings == "NOTVALID":
             kube_settings = os.environ.get("KUBECTL_ARGS")
         if kube_settings is not None:
-            os.system("kubectl " + str(kube_settings) + " create -f " + str(kube_settings_json))
+            kube = subprocess.Popen(["kubectl", str(kube_settings), "create", "-f -"],
+                                    stdout=subprocess.PIPE, stdin=subprocess.PIPE,
+                                    stderr=subprocess.STDOUT)
+            kube.communicate(input=str(kube_settings_json))
         else:
-            os.system("kubectl create -f " + str(kube_settings_json))
+            kube = subprocess.Popen(["kubectl", "create", "-f -"], stdout=subprocess.PIPE, stdin=subprocess.PIPE,
+                                    stderr=subprocess.STDOUT)
+            kube.communicate(input=str(kube_settings_json))
