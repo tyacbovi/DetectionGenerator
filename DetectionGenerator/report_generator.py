@@ -24,6 +24,12 @@ class ReportGenerator:
         self.entity_manager = _entity_manager
         self.reports_total = 0
 
+    def calculate_wait_time(self, elapsed_time):
+        wait_time = (1.0/self.report_freq) - elapsed_time
+        if wait_time < 0:
+            return 0
+        return wait_time
+
     def generate(self):
         freq_count = 0.0
         last_round_time = time.time()
@@ -47,4 +53,4 @@ class ReportGenerator:
                 log().debug("Reporting update on entity:" + report)
                 self.reporter.report(report)
             end_generation_time = time.time()
-            time.sleep((1.0/self.report_freq) - (end_generation_time - start_generation_time))
+            time.sleep(self.calculate_wait_time(end_generation_time - start_generation_time))
