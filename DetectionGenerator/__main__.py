@@ -47,10 +47,9 @@ if __name__ == "__main__":
                                _reporter=kafka_reporter, _number_of_reports=number_of_entities)
 
     if settings.to_only_create:
-        reporter.generate()
+        reporter.single_generation()
         while True:
             import time
-
             time.sleep(1)
     else:
         reporter.generate()
