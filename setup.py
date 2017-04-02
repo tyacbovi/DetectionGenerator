@@ -10,5 +10,5 @@ setup(
     author='taly',
     author_email='',
     description='A detection generator tool',
-    requires=["simplejson", "plyvel", "confluent_kafka"]
+    requires=["simplejson", "plyvel", "confluent_kafka", "urllib3"]
 )

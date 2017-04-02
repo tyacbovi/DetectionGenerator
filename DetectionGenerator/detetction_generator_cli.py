@@ -19,4 +19,3 @@ class DetectionGeneratorCLI:
 
     def get_user_settings(self):
         return self.parser.parse_args()
-

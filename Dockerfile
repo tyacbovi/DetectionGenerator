@@ -18,7 +18,8 @@ RUN apt-get -y --no-install-recommends install \
 RUN pip install --upgrade pip \
  && pip install setuptools \
  && pip install plyvel \
- && pip install simplejson
+ && pip install simplejson \
+ && pip install urllib3
 
 #Installing kafka with python client
 ENV LIBRDKAFKA_VERSION 0.9.4
