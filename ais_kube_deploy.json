@@ -2,22 +2,22 @@
 	"apiVersion": "extensions/v1beta1",
 	"kind": "Deployment",
 	"metadata": {
-		"name": "rand-gen",
+		"name": "ais",
 		"namespace": "default"
 	},
 	"spec": {
 		"replicas": 1,
 		"template": {
 			"metadata": {
-				"name": "rand-gen",
+				"name": "ais",
 				"labels": {
-					"app": "rand-gen"
+					"app": "ais"
 				}
 			},
 			"spec": {
 				"containers": [
 					{
-						"name": "rand-gen",
+						"name": "ais",
 						"image": "docker.io/tyacbovi/detectiongenerator",
 						"command": [
 							"python"

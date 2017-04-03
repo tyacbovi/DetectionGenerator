@@ -2,22 +2,22 @@
 	"apiVersion": "extensions/v1beta1",
 	"kind": "Deployment",
 	"metadata": {
-		"name": "rand-gen",
+		"name": "flights",
 		"namespace": "default"
 	},
 	"spec": {
 		"replicas": 1,
 		"template": {
 			"metadata": {
-				"name": "rand-gen",
+				"name": "flights",
 				"labels": {
-					"app": "rand-gen"
+					"app": "flights"
 				}
 			},
 			"spec": {
 				"containers": [
 					{
-						"name": "rand-gen",
+						"name": "flights",
 						"image": "docker.io/tyacbovi/detectiongenerator",
 						"command": [
 							"python"
