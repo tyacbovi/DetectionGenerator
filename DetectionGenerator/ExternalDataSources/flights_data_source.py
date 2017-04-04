@@ -11,7 +11,7 @@ headers = {'Accept': 'application/json, text/javascript, */*',
             'Accept-Encoding': 'gzip, deflate, sdch'
            }
 
-url = 'https://data.flightradar24.com/zones/fcgi/feed.js?bounds=32.91166128274316,30.70856633173285,32.367455749512374,35.826416015625&faa=1&mlat=1&flarm=1&adsb=1&gnd=1&air=1&vehicles=1&estimated=1&maxage=900&gliders=1&stats=1'
+url = 'https://data.flightradar24.com/zones/fcgi/feed.js?bounds=32.91166128274316,30.70856633173285,32.367455749512374,35.826416015625'
 
 
 class FlightsDataSource:
