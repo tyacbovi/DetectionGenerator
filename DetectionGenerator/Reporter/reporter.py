@@ -4,3 +4,6 @@ class Reporter:
 
     def report(self, msg):
         pass
+
+    def end_reporting(self):
+        pass

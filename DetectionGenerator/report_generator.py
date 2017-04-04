@@ -37,6 +37,7 @@ class ReportGenerator:
         for report in entities_reports:
             log().debug("Reporting update on entity:" + report)
             self.reporter.report(report)
+        self.reporter.end_reporting()
 
     def generate(self):
         freq_count = 0.0
