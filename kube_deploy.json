@@ -27,9 +27,7 @@
 							"-b",
 							"kafka.kafka:9092",
 							"-s",
-							"source1",
-							"-t",
-							"True"
+							"source1"
 						]
 					}
 				]
