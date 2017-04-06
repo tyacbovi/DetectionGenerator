@@ -1,4 +1,5 @@
 from entity_report import EntityReport
+import time
 
 
 class EntityReportFactory:
@@ -20,4 +21,5 @@ class EntityReportFactory:
                             "spain",
                             "url",
                             0.0,
-                            "nickname")
+                            "nickname",
+                            time.time())

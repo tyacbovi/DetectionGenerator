@@ -1,4 +1,5 @@
 from entity_report import EntityReport
+import time
 
 
 class EntityReportUpdate:
@@ -12,6 +13,6 @@ class EntityReportUpdate:
         return EntityReport(entity_report.id, new_location.lat, new_location.long, entity_report.source_name,
                             entity_report.category, entity_report.speed, entity_report.course,  entity_report.elevation,
                             entity_report.nationality, entity_report.picture_url, entity_report.height,
-                            entity_report.nickname)
+                            entity_report.nickname, time.time())
 
 

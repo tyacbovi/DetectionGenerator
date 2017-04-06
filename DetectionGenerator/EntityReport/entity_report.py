@@ -4,6 +4,6 @@ from simplejson import dumps
 
 class EntityReport(namedtuple("EntityReport", ("id", "lat", "xlong", "source_name", "category",
                                                "speed", "course", "elevation", "nationality", "picture_url", "height",
-                                               "nickname"))):
+                                               "nickname", "timestamp"))):
     def to_json(self):
         return dumps(self, namedtuple_as_object=True)
